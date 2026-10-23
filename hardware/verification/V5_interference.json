@@ -1,0 +1,31 @@
+{
+  "poses_percent": [
+    0,
+    25,
+    50,
+    75,
+    100
+  ],
+  "collisions": [],
+  "skipped_pairs_contact_by_design": [
+    "01-07",
+    "01-REF_EAR_SHIMS",
+    "03-05",
+    "03-REF_HORN",
+    "04-REF_HORN",
+    "07-REF_HEADERS",
+    "07-REF_PCB",
+    "REF_COMPONENTS-REF_PCB",
+    "REF_COMPONENTS-REF_USB",
+    "REF_DUPONT_ENVELOPE-REF_HEADERS",
+    "REF_EAR_SHIMS-REF_SG90",
+    "REF_HEADERS-REF_PCB",
+    "REF_HORN-REF_HORN_SCREW",
+    "REF_HORN-REF_SG90",
+    "REF_PCB-REF_USB"
+  ],
+  "gear_face_to_cover_boss_mm": 1.0,
+  "hub_end_to_bore_bottom_mm": 0.82,
+  "hub_radial_clearance_mm": 0.5,
+  "pass": true
+}

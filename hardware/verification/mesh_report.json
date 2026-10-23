@@ -1,0 +1,236 @@
+[
+  {
+    "name_zh": "后壳、一体导轨及SG90安装座",
+    "group": "static",
+    "main": true,
+    "note": "背面朝下；侧窗为45度自承拱顶；需要≥215 mm的打印平台。",
+    "print_bbox_mm": [
+      98.5,
+      214.0,
+      42.2
+    ],
+    "id": "01_plaque_back",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 126215.3308287929,
+    "sha256": "d8dc6c038c726eaecbbdd9720e3183c76fef77a0396a5590b3bac63ee3cc1aaf",
+    "pass": true
+  },
+  {
+    "name_zh": "实心刻度面板及防脱导向唇",
+    "group": "static",
+    "main": true,
+    "note": "正面朝热床，内侧导向唇朝上。",
+    "print_bbox_mm": [
+      98.5,
+      214.0,
+      10.700000000000031
+    ],
+    "id": "02_front",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 53112.2343643993,
+    "sha256": "617a657c541470fe3a9ebed34c90c34c3324a5b4ac20421ef6dd24c886e1cc3f",
+    "pass": true
+  },
+  {
+    "name_zh": "直驱74齿齿轮",
+    "group": "rotary",
+    "main": true,
+    "note": "背面舵盘槽朝下。",
+    "print_bbox_mm": [
+      75.99986603225798,
+      75.95845649378288,
+      7.900000000000276
+    ],
+    "id": "03_pinion_74T",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 11076.438873457111,
+    "sha256": "0f3ebd48a000c2df9b0ba197f360fe92ebc35e4ed945b471ded1bdba52a9dcab",
+    "pass": true
+  },
+  {
+    "name_zh": "原装舵盘压盖",
+    "group": "rotary",
+    "main": true,
+    "note": "平放，4颗M2x6从背面拧入齿轮。",
+    "print_bbox_mm": [
+      28.0,
+      28.0,
+      2.0
+    ],
+    "id": "04_horn_keeper",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 972.9563017990696,
+    "sha256": "e48df7883a5ff73067a2fa1141ca585a3a8e4102d4df579eec48583b6852f6cb",
+    "pass": true
+  },
+  {
+    "name_zh": "齿条与滑块（100 mm）",
+    "group": "linear",
+    "main": true,
+    "note": "背面凸缘朝热床，指针颈朝上。",
+    "print_bbox_mm": [
+      11.349999999999994,
+      100.0,
+      17.849999999999994
+    ],
+    "id": "05_rack_slider",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 6119.853758245702,
+    "sha256": "d58931ac4ddda4b10a11fcbac23dad4cffa71366e9fea85dc9f7e35d99880bd5",
+    "pass": true
+  },
+  {
+    "name_zh": "大箭头",
+    "group": "linear",
+    "main": true,
+    "note": "箭头正面朝下；M2x6。",
+    "print_bbox_mm": [
+      36.9,
+      12.0,
+      2.3999999999999986
+    ],
+    "id": "06_arrow",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 642.1860655324474,
+    "sha256": "a8b98364b46f5880432e2c7ee221c25cf1930cdb53292512c873f76620149761",
+    "pass": true
+  },
+  {
+    "name_zh": "ESP32背仓底座",
+    "group": "static",
+    "main": true,
+    "note": "贴壳面朝热床，立柱朝上。",
+    "print_bbox_mm": [
+      56.85000000000001,
+      35.349999999999994,
+      14.050000000000006
+    ],
+    "id": "07_pod_base",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 8202.060234483908,
+    "sha256": "dd5fbbcbebc933737fc3cf9d08347caf451f5f3ac279f66a34445eed9082f209",
+    "pass": true
+  },
+  {
+    "name_zh": "ESP32背仓盖板",
+    "group": "static",
+    "main": true,
+    "note": "平放。",
+    "print_bbox_mm": [
+      55.85000000000001,
+      31.349999999999994,
+      2.0
+    ],
+    "id": "08_pod_lid",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 2405.0359950651527,
+    "sha256": "5a6518b3dbd528c0228679a2ecd5659d971b20d7a920cbb0b2f071c4d6242d9c",
+    "pass": true
+  },
+  {
+    "name_zh": "导轨试配片",
+    "group": "static",
+    "main": false,
+    "note": "",
+    "print_bbox_mm": [
+      19.5,
+      16.0,
+      13.900000000000002
+    ],
+    "id": "T1_guide_sample",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 2381.1200344848603,
+    "sha256": "5dfadcdb404148a16ebddb6eb74907b7ca7661f1c33b993e139ed65e5e90bb1f",
+    "pass": true
+  },
+  {
+    "name_zh": "滑块试配片",
+    "group": "static",
+    "main": false,
+    "note": "",
+    "print_bbox_mm": [
+      11.349999999999994,
+      14.0,
+      7.6000000000000085
+    ],
+    "id": "T2_slider_sample",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 829.4203477695578,
+    "sha256": "6e102c45efaba5fc59a475fa4ed2c5b2544fec1bff03d4bfae5539fcda38a6dc",
+    "pass": true
+  },
+  {
+    "name_zh": "M2底孔与前导向孔试配片",
+    "group": "static",
+    "main": false,
+    "note": "",
+    "print_bbox_mm": [
+      34.0,
+      18.0,
+      5.0
+    ],
+    "id": "T3_pilot_and_journal",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 2385.2692508972373,
+    "sha256": "fcb6ffa654cb504987f85ddaa99dbbb4f596ef19d543c8e2646f27cbc518b00e",
+    "pass": true
+  },
+  {
+    "name_zh": "十字舵盘槽试配片",
+    "group": "static",
+    "main": false,
+    "note": "",
+    "print_bbox_mm": [
+      38.0,
+      38.0,
+      3.3999999999999986
+    ],
+    "id": "T5_horn_fit",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 3262.5047180128117,
+    "sha256": "63e7340140e778c236e33d7619dff1e549188715128adee3b574481d22f55290",
+    "pass": true
+  },
+  {
+    "name_zh": "前面板防脱唇试配片",
+    "group": "static",
+    "main": false,
+    "note": "",
+    "print_bbox_mm": [
+      5.75,
+      16.000000000000014,
+      10.700000000000003
+    ],
+    "id": "T4_front_lip_sample",
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "volume_mm3": 539.5200040209287,
+    "sha256": "3eb51a60160b3c7b416418c893a87be7dd8c14a1ae78b17ab79443647fab4e98",
+    "pass": true
+  }
+]

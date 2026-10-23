@@ -1,0 +1,15 @@
+* text=auto
+
+*.md text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.swift text eol=lf
+*.ino text eol=lf
+*.json text eol=lf
+*.plist text eol=lf
+*.txt text eol=lf
+*.step text eol=lf -diff
+
+*.stl binary
+*.png binary
+*.dmg binary

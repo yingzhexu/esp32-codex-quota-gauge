@@ -1,0 +1,48 @@
+{
+  "samples": 501,
+  "max_tooth_overlap_mm2": 0.0,
+  "pass": true,
+  "stroke_mm": 90.0,
+  "servo_sweep_deg": 139.36811232911916,
+  "servo_working_angles_nominal_deg": [
+    20.31594383544042,
+    159.6840561645596
+  ],
+  "servo_end_reserve_nominal_deg": [
+    20.31594383544042,
+    20.31594383544042
+  ],
+  "pointer_y_range_mm": [
+    62.0,
+    152.0
+  ],
+  "rack_swept_y_mm": [
+    12.0,
+    202.0
+  ],
+  "rail_y_mm": [
+    10.0,
+    204.0
+  ],
+  "rack_end_margin_mm": 1.1999999999999993,
+  "external_case_mm": [
+    98.5,
+    214.0,
+    44.6
+  ],
+  "with_arrow_mm": [
+    98.5,
+    214.0,
+    49.4
+  ],
+  "with_pod_mm": [
+    98.5,
+    214.0,
+    63.45
+  ],
+  "pod_depth_behind_case_mm": 14.05,
+  "gear_tip_to_left_wall_mm": 1.6,
+  "notes": [
+    "Nominal geometric checks; ESP32 header row position along the board is assumed, slots leave margin."
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "revision": "V5.0 90 mm stroke, single 74T gear, rear ESP32 pod, solid tick-only faceplate",
+  "units": "mm",
+  "case_width": 98.5,
+  "case_height": 214.0,
+  "case_depth": 44.6,
+  "back_extension": 3.0,
+  "wall": 2.4,
+  "stroke": 90.0,
+  "rack_length": 100.0,
+  "gear_module": 1.0,
+  "gear_teeth": 74,
+  "gear_center_x": 42.0,
+  "pressure_angle_deg": 20.0,
+  "gear_tooth_thinning": 0.08,
+  "rack_center_extra": 0.15,
+  "slider_clearance_per_side": 0.3,
+  "gear_front_journal_diameter": 12.0,
+  "gear_front_hub_length": 2.95,
+  "cover_journal_bore": 13.0,
+  "cover_journal_start_z": 36.6,
+  "sg90": {
+    "source": "standard SG90 23 x 12.3 body, 32 ear span, 27.5 hole spacing, 31 base to shaft top; ear height corrected by the user's V4 build (needed a 2.0 mm shim, i.e. ear-to-shaft 14.1 mm)",
+    "body_length": 23.0,
+    "body_width": 12.3,
+    "case_height": 22.7,
+    "total_height_to_shaft_top": 31.0,
+    "ear_bottom_from_base": 16.9,
+    "ear_thickness": 2.5,
+    "ear_span": 32.0,
+    "ear_hole_spacing": 27.5,
+    "shaft_offset_from_body_center": 5.5,
+    "tower_radius": 5.9,
+    "shaft_exposed": 3.3
+  },
+  "servo_nominal_shim": 1.0,
+  "servo_shim_options": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0
+  ],
+  "servo_body_window_width": 13.0,
+  "servo_body_window_length": 23.8,
+  "esp32": {
+    "source": "YVZD ESP-32 Type-C FT232 30Pin listing: PCB 51.85 x 28.35, holes 3.0 at 46.5 x 23.5, header rows 24.5 apart",
+    "pcb_length": 51.85,
+    "pcb_width": 28.35,
+    "pcb_thickness": 1.6,
+    "hole_spacing_x": 46.5,
+    "hole_spacing_y": 23.5,
+    "hole_diameter": 3.0,
+    "header_row_spacing": 24.5,
+    "header_plastic": 2.5,
+    "pin_length_below_plastic": 6.0,
+    "component_height": 4.5,
+    "center_x": 33.9,
+    "center_y": 52.0
+  },
+  "horn_pocket_length": 36.0,
+  "horn_pocket_width": 7.0,
+  "horn_pocket_depth": 2.4,
+  "servo_available_travel_deg": 180.0,
+  "servo_nominal_center_deg": 90.0,
+  "shell_arch_left_windows_y": [
+    [
+      14,
+      46
+    ],
+    [
+      58,
+      100
+    ],
+    [
+      114,
+      156
+    ],
+    [
+      168,
+      200
+    ]
+  ],
+  "shell_arch_top_bottom_windows_x": [
+    [
+      12,
+      42
+    ],
+    [
+      50,
+      78
+    ]
+  ],
+  "horn": {
+    "source": "SG90 cross (4-arm) horn as in the user's photo; typical dimensions, check with T5 coupon",
+    "long_arm": 16.5,
+    "short_arm": 10.0,
+    "width_hub": 5.6,
+    "width_tip_long": 3.8,
+    "width_tip_short": 4.2,
+    "thickness": 1.5,
+    "hub_d": 7.0,
+    "hub_below_arm": 2.4,
+    "clearance": 0.2,
+    "center_screw_head_d": 4.5,
+    "center_screw_head_h": 1.6
+  },
+  "gear_center_bore": 6.5
+}

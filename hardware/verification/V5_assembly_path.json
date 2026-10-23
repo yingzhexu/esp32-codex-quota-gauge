@@ -1,0 +1,141 @@
+{
+  "steps": [
+    {
+      "step": "舵机放入安装座（从正面放入）",
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "背仓底座贴到后壳背面",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "ESP32 插好杜邦线后，排针穿过长槽装进背仓",
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "背仓盖板沿导槽从天线端推入",
+      "direction": [
+        1,
+        0,
+        0
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "齿条从正面放进导轨",
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "齿轮+舵盘+压盖套上舵机轴",
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "面板抬高 3.5 mm 放下（挂钩避开卡槽）",
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "start_offset": [
+        0,
+        3.5,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "面板向下推 3.5 mm，挂钩卡进卡槽",
+      "direction": [
+        0,
+        1,
+        0
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    },
+    {
+      "step": "箭头压到指针颈上",
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "start_offset": [
+        0,
+        0,
+        0
+      ],
+      "pass": true,
+      "collisions": []
+    }
+  ],
+  "pass": true,
+  "method": "Exact B-rep Boolean volume at 9 offsets per step along the insertion direction."
+}
