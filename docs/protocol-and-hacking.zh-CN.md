@@ -1,4 +1,4 @@
-# 蓝牙指针仪表：工作原理、通信协议与改造指南
+# 机械指针：工作原理、通信协议与改造指南
 
 > **写给 AI 助手：** 这是一个现成的硬件"百分比指针"。你只需要通过蓝牙或 USB 串口，发一行文本 `Q <0-100>`，箭头就会移动到对应位置。读完本文，你就能把它改造成显示任何 0–100% 数值的仪表（CPU 占用、电量、天气、股价涨跌、任务进度等），**不需要改固件，也不需要改机械结构**。
 >
@@ -13,8 +13,8 @@
 | 部分 | 作用 |
 |---|---|
 | **机械** | SG90 舵机转动 74 齿齿轮，推动齿条直线移动，齿条上装箭头。舵机转 139.4°，箭头走 90 mm |
-| **ESP32 固件** | 蓝牙设备名 `CodexGauge`，接收文本命令，控制舵机 PWM，平滑移动到目标位置 |
-| **上位机（目前是 Mac 菜单栏 App）** | 读取数据源（目前是 Codex 剩余额度），换算成百分比，通过蓝牙发给 ESP32 |
+| **ESP32 固件** | 蓝牙设备名 `CodexGauge`（为兼容已烧录的板子沿用这个名字），接收文本命令，控制舵机 PWM，平滑移动到目标位置 |
+| **上位机（Mac 菜单栏 App「机械指针」）** | 读取数据源，换算成百分比，通过蓝牙发给 ESP32。目前有两种数据源：Codex 剩余额度；屏幕上的游戏仪表（速度、转速、高度，见第 6.5 节） |
 
 **关键设计：固件对数据含义一无所知，它只认"百分比"。** 所以要改造成别的仪表，只需要换掉上位机的数据源，并按需更换面板刻度。
 
@@ -60,6 +60,7 @@
 - **每条命令都会回复一行**，前缀是 `OK`、`ERR` 或 `STATUS`。
 - 回复会**同时**发到 BLE Notify 和 USB 串口（115200 波特率）。
 - **建议逐条发送：** 发一条，等到回复再发下一条。固件的蓝牙接收队列只有 8 行，写得太快会丢命令。
+- **实时数据可以连续推送：** 游戏指针这类实时数据，用 Write Without Response 连续发 `Q`、不等回复，每秒最多 40 条（间隔 ≥ 25 ms）。固件每 2 ms 处理一次接收队列，来得及。第一条建议仍然等回复，以确认已经校准。
 
 ### 3.3 命令表
 
@@ -69,7 +70,7 @@
 | `T <百分比>` | **测试位置**。移动方式和 `Q` 一样，但不算作真实数据 | `OK T 50.0` | `ERR T_RANGE` / `ERR NOT_CALIBRATED` |
 | `P <微秒>` | 直接设定舵机脉宽（500–2500），用于校准和居中。同时把数据标记为过期 | `OK P 1500` | `ERR P_RANGE` |
 | `CAL <0%脉宽> <100%脉宽>` | 保存校准值。两个值都在 500–2500 之间、至少相差 200，顺序可以反过来（用来反转方向） | `OK CAL 730 2270` | `ERR CAL_RANGE` |
-| `SPEED <°/秒>` | 舵机转动速度，10–400，默认 90 | `OK SPEED 120` | `ERR SPEED_RANGE` |
+| `SPEED <°/秒>` | 舵机转动速度，10–1000（V5 固件；V4 最高 400），默认 90 | `OK SPEED 120` | `ERR SPEED_RANGE` |
 | `STATUS` | 查询状态 | 见 3.4 | — |
 | `STALE` | 主动标记"数据源不可用"（LED 改为慢闪，箭头不动） | `OK STALE` | — |
 | `OFF` | 立即停止 PWM，放松舵机 | `OK OFF` | — |
@@ -207,14 +208,23 @@ V5（74 齿齿轮）的参考值约为 `CAL 730 2270`。
 
 ### 6.5 改造 Mac App
 
-App 源码是单文件 `macos-app/Sources/main.swift`：
-- **数据源**在 `QuotaService` 类里（目前通过 `codex app-server --stdio` 的 JSON-RPC 方法 `account/rateLimits/read` 读取 Codex 额度）。把它替换成你的数据源，返回 0–100 的数值即可；
-- 蓝牙部分 `BLELink` 和界面部分可以原样复用；
+App 源码在 `macos-app/Sources/`：
+- `main.swift`：
+  - **Codex 数据源**在 `QuotaService` 类里，通过 `codex app-server --stdio` 的 JSON-RPC 方法 `account/rateLimits/read` 读取额度；
+  - **游戏模式的发送循环**在 `GaugeModel.gameTick()`，每秒 40 次：把读数换算成百分比，变化够大就用 `BLELink.push()`（Write Without Response）发出去；
+  - 蓝牙部分 `BLELink` 和界面部分可以原样复用。
+- `game.swift`：
+  - 屏幕识别：`SpeedReader` 用 ScreenCaptureKit 截取框选区域，`SpeedOCR` 用 Vision 识别数字，并按字形数校验、精确模式复核；
+  - `BarGauge` 用像素分析读转速条和档位；
+  - 平滑与过滤：`SpeedFilter`、`OneEuroFilter`、`RedlineHold`；
+  - 转速模拟：`TachModel`；
+  - 框选窗口：`RegionPicker`。
+- 想加新的数据源，在 `GaugeModel` 里算出 0–100 的数值，再走和 Codex 或游戏模式一样的发送逻辑即可。
 - 编译：`cd macos-app && ./build.sh`（只需要 Xcode 命令行工具）。
 
 ### 6.6 需要改固件的情况（一般不需要）
 
-固件在 `firmware/QuotaGaugeBLE/QuotaGaugeBLE.ino`：
+固件在 `firmware/MechanicalGaugeBLE/MechanicalGaugeBLE.ino`：
 - **同时用多个指针：** 修改 `DEVICE_NAME`，比如 `Gauge-CPU`、`Gauge-Temp`，上位机按名字区分（每个板子服务 UUID 相同也没关系）；
 - **舵机换到别的引脚：** 修改 `SERVO_PIN`（避开 GPIO 0/2/12/15 这些启动引脚，以及 34–39 这些只能输入的引脚）；
 - **需要防止别人连接：** 目前没有配对和加密，附近任何设备都能连。如果在意，可以在固件里加 BLE 配对，或者加一个简单的口令命令。
@@ -227,10 +237,10 @@ App 源码是单文件 `macos-app/Sources/main.swift`：
 |---|---|
 | 主控 | ESP32-D0WD-V3，30 针 USB-C 开发板（FT232 串口芯片） |
 | 舵机 | SG90，180°，信号线接 GPIO13（D13） |
-| 舵机供电 | **3V3**（这种板子的 VIN 插 USB 时没有 5V 输出），GND 共地 |
+| 舵机供电 | 5V / VIN（板子插 USB 时这个脚有 5V 才行），否则 3V3；GND 共地。电源要能给足电流：Mac 的 USB 口可能带不动，用 USB 充电头或充电宝 |
 | PWM | 50 Hz，16 位分辨率，脉宽 500–2500 µs 对应 0–180° |
 | 行程 | 0–100% 对应舵机 139.4°，箭头直线移动 90 mm |
-| 转速 | 默认 90°/秒，0→100% 约 1.5 秒，可调 10–400 |
+| 转速 | 默认 90°/秒，0→100% 约 1.5 秒，可调 10–1000（超过舵机自身极限后按舵机最快速度转） |
 | 精度 | 约 ±1 mm（齿隙 + 舵机死区），满量程的 1% 左右 |
 | 烧录设置 | ESP32 Dev Module，**Flash Mode DIO、4MB、115200** |
 
@@ -241,18 +251,20 @@ App 源码是单文件 `macos-app/Sources/main.swift`：
 1. **未校准时 `Q` 会返回 `ERR NOT_CALIBRATED`。** 新烧录的板子要先 `CAL`。
 2. **打开 USB 串口会让 ESP32 重启**（DTR/RTS 自动复位），打开后要等 2～3 秒再发命令。
 3. **蓝牙只能连 1 台上位机。** 搜不到设备时，先检查是不是别的程序（旧的 App、Python 脚本、手机）已经连着了。
-4. **macOS 需要蓝牙权限。** 从终端运行时授权给"终端"，打包成 App 时 Info.plist 里要有 `NSBluetoothAlwaysUsageDescription`，否则程序一访问蓝牙就会被系统终止。
+4. **macOS 需要蓝牙权限。** macOS 检查的是"负责的 App"的 Info.plist 里有没有 `NSBluetoothAlwaysUsageDescription`，没有的话程序一访问蓝牙就会被系统终止（崩溃报告里写 `Namespace TCC`）。打包成 App 时一定要写上这一项。如果从终端或其他工具里启动脚本被终止，就把脚本包成一个带这项说明的 .app 再运行。
 5. **不要把舵机 3 针插头直接插在开发板排针上。** 引脚顺序是 VIN-GND-D13，和舵机的棕-红-橙对不上，会把舵机电源接反。要用 3 根杜邦线分开接。
 6. **烧录失败、提示 `invalid header` 或读不到 Flash** → 改用 DIO 模式、115200 波特率重新烧录。
 7. **箭头不要贴着止挡工作**，校准时 0% 和 100% 都留在刻度线上，不要推到底。
-8. **发送频率不用太高。** 1 秒一次已经很平滑了；舵机移动本身就有限速，发太快没有意义，还会把蓝牙队列塞满。
+8. **发送频率按需选。** 普通数据 1 秒一次已经很平滑；逐条等回复时发太快会把蓝牙队列塞满。实时数据（游戏）用 Write Without Response 连续推送，每秒最多约 40 条，同时把 `SPEED` 调到 400°/s 以上。
+9. **舵机一动就只有齿轮声、板子不响应**：是供电不够，不是固件问题。换 USB 充电头 / 充电宝，或者加 470～1000 µF 电容。
 
 ---
 
 ## 9. 文件位置
 
-GitHub 项目文件夹（桌面 `codex-quota-gauge`）：
-- 固件：`firmware/QuotaGaugeBLE/QuotaGaugeBLE.ino`
-- Mac App：`macos-app/Sources/main.swift`
-- Python 示例 / 命令行桥接：`tools/python/codex_gauge_ble.py`
+GitHub 项目文件夹（桌面 `esp32-mechanical-gauge`）：
+- 固件：`firmware/MechanicalGaugeBLE/MechanicalGaugeBLE.ino`
+- Mac App：`macos-app/Sources/main.swift`（界面、蓝牙、Codex、发送循环）、`macos-app/Sources/game.swift`（屏幕识别、转速模拟、滤波）
+- 安装包：`release/MechanicalGauge.dmg`
+- Python 示例 / 命令行工具：`tools/python/gauge_ble.py`
 - 3D 模型：`hardware/STL/`、`hardware/CAD/`（`parameters.json` 里有全部尺寸）

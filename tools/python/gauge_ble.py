@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Codex 额度指针 · Mac 蓝牙桥接
+"""机械指针 · Mac 蓝牙命令行工具（Codex 额度模式）
 
 Reads the local Codex quota (codex app-server, read-only) and sends the
 remaining percent to the ESP32 over Bluetooth LE.
 
-  python3 codex_gauge_ble.py                 run: update the gauge every 60 s
-  python3 codex_gauge_ble.py scan            list nearby gauges
-  python3 codex_gauge_ble.py center          move servo to 1500 us (assembly)
-  python3 codex_gauge_ble.py calibrate       guided 0% / 100% calibration
-  python3 codex_gauge_ble.py cmd "STATUS"    send one raw command
-  python3 codex_gauge_ble.py quota           print quota only, no Bluetooth
+  python3 gauge_ble.py                 run: update the gauge every 60 s
+  python3 gauge_ble.py scan            list nearby gauges
+  python3 gauge_ble.py center          move servo to 1500 us (assembly)
+  python3 gauge_ble.py calibrate       guided 0% / 100% calibration
+  python3 gauge_ble.py cmd "STATUS"    send one raw command
+  python3 gauge_ble.py quota           print quota only, no Bluetooth
 """
 from __future__ import annotations
 import argparse, asyncio, json, sys, time

@@ -10,4 +10,4 @@ venv/
 work/
 build/
 *.app/
-macos-app/CodexGauge.dmg
+macos-app/MechanicalGauge.dmg

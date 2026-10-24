@@ -1,4 +1,6 @@
-/* Codex 额度指针 · ESP32 BLE firmware (ESP32 Arduino Core 3.x)
+/* 机械指针 · ESP32 BLE firmware (ESP32 Arduino Core 3.x)
+ * One firmware for both uses: the Mac app sends Q for the Codex quota or for a
+ * game's speed / simulated rpm (up to ~40 Q per second, Write Without Response).
  *
  * Wiring: SG90 signal (orange) -> GPIO13 (D13), red -> 3V3, brown -> GND.
  * (On this V2363 board VIN carries no USB 5 V, so the servo runs from 3V3.)
@@ -8,9 +10,10 @@
  *   STATUS             report state
  *   P <us>             move to a raw pulse (calibration / centering only)
  *   CAL <us0> <us100>  save pulse for 0% and 100% (either order)
- *   Q <percent>        show remaining quota 0..100 (needs CAL first)
+ *   Q <percent>        show a value 0..100 (quota, speed or rpm; needs CAL first)
  *   T <percent>        test position 0..100 (needs CAL; not counted as quota data)
- *   SPEED <deg/s>      servo speed 10..400, saved (default 90; SG90 max ~400)
+ *   SPEED <deg/s>      servo speed 10..1000, saved (default 90; above the SG90's own
+ *                      limit (~400-600 deg/s) the servo simply moves at full speed)
  *   STALE              mark data as stale (LED blinks slowly)
  *   OFF                stop driving the servo
  * Replies ("OK ..." / "ERR ..." / "STATUS ...") go to serial and BLE notify.
@@ -34,6 +37,7 @@ constexpr int CAL_MIN_US = 500;
 constexpr int CAL_MAX_US = 2500;
 constexpr float US_PER_DEG = 2000.0f / 180.0f;
 constexpr float DEFAULT_SPEED_DPS = 90.0f;  // full 0-100% stroke (118.5 deg) in ~1.3 s
+constexpr float MAX_SPEED_DPS = 1000.0f;    // effectively "no smoothing"; the servo limits itself
 constexpr uint32_t HOLD_MS = 800;           // keep pulsing after arrival
 constexpr uint32_t STALE_MS = 10UL * 60 * 1000;
 
@@ -105,7 +109,7 @@ void handle(const char *line) {
     moveTo(a); hasData = false; reply("OK P %d", a); return;
   }
   if (sscanf(line, "SPEED %f %c", &percent, &extra) == 1) {
-    if (!isfinite(percent) || percent < 10 || percent > 400) { reply("ERR SPEED_RANGE"); return; }
+    if (!isfinite(percent) || percent < 10 || percent > MAX_SPEED_DPS) { reply("ERR SPEED_RANGE"); return; }
     speedDps = percent; prefs.putFloat("speed", speedDps);
     reply("OK SPEED %.0f", speedDps); return;
   }
@@ -172,13 +176,13 @@ void setup() {
   Serial.begin(115200);
   prefs.begin("quota-gauge", false);
   emptyUs = prefs.getInt("empty", 1000); fullUs = prefs.getInt("full", 2000);
-  speedDps = constrain(prefs.getFloat("speed", DEFAULT_SPEED_DPS), 10.0f, 400.0f);
+  speedDps = constrain(prefs.getFloat("speed", DEFAULT_SPEED_DPS), 10.0f, MAX_SPEED_DPS);
   calibrated = prefs.getBool("cal", false) && emptyUs >= CAL_MIN_US && emptyUs <= CAL_MAX_US
             && fullUs >= CAL_MIN_US && fullUs <= CAL_MAX_US && abs(emptyUs - fullUs) >= 200;
   // Unknown position after power-up: assume centre; the first move slews from there.
   currentUs = targetUs = 1500;
   setupBle();
-  Serial.println("READY CODEX_GAUGE_BLE V4");
+  Serial.println("READY MECHANICAL_GAUGE_BLE V5");
   status();
 }
 

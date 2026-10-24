@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Codex 额度指针 V5: 90 mm stroke, 74T gear on SG90, rear ESP32 pod.
+"""机械指针 V5: 90 mm stroke, 74T gear on SG90, rear ESP32 pod.
 
 Mechanism frame: the case back plane is z=B (=-DZ); every part is shifted +DZ
 on export so the plaque back lands on z=0. Z values of the gear/rack/faceplate
@@ -361,7 +361,7 @@ def build():
         s=ear_shim(thick,EAR_Y[1]);b=s.BoundingBox()
         cq.exporters.export(s.translate((-b.xmin,-b.ymin,-b.zmin)),str(STL/f'S_servo_ear_shim_{thick:.1f}mm_print2.stl'))
     hardware={n:s.translate((0,0,DZ)) for n,s in refs().items()}
-    assy=cq.Assembly(name='CodexQuotaPlaqueV5')
+    assy=cq.Assembly(name='MechanicalGaugeV5')
     for n,o in PARTS.items():
         if o['main']:assy.add(o['shape'],name=n,color=cq.Color(.78,.79,.78))
     for n,s in hardware.items():
